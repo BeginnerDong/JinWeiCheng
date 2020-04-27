@@ -1,0 +1,8 @@
+
+/* 产品列表 */
+.productList{flex-wrap: wrap;align-items: flex-start;}
+.productList .item{width: 335rpx;height: 480rpx;background: #fff;overflow: hidden; border-radius: 20rpx;}
+.productList .item .pic{width: 100%;height: 300rpx;}
+.productList .item .pic image{width: 100%;height:100%; display: block;}
+.productList .item .infor{padding: 16rpx 20rpx;}
+.productList .item .infor .tit{height: 84rpx;}

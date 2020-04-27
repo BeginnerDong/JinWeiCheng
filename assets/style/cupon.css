@@ -1,0 +1,11 @@
+/* 优惠券列表 */
+	.cuponList .item{width: 100%;overflow: hidden;position: relative;}
+	.cuponList .item .bj{position: absolute;top: 0;right: 0;bottom: 0;left: 0;z-index: -1;}
+	.cuponList .item .infor{width: 100%; height: 216rpx; position: relative;z-index: 2;padding:30rpx;}
+	.cuponList .item .left{ width: 27.3%; height: 155rpx;border-right: 2rpx dashed #d7d7d7;}
+	.cuponList .item .left .mny{font-size: 68rpx; line-height: 88rpx;color: #FF3B3B;position:relative;font-weight: bold;}
+	.cuponList .item .left .mny::after{content: '元'; font-size: 24rpx; line-height: 30rpx;font-weight: normal;}
+	.cuponList .item .infor .text{width: 72%;height: 136rpx;line-height: 32rpx;}
+	
+	.fixState{position: absolute; top: 12rpx;right: 12rpx;width: 95rpx;height: 91rpx;}
+	
