@@ -93,15 +93,17 @@
 			<view class="closebtn" @click="yushouTextShow">×</view>
 			<view class="mb-3 font-30 pb-1 text-center">预售说明</view>
 			<view class="mgt15">
-				<scroll-view class="xqInfor font-26 color6" scroll-y>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-					<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+				<scroll-view class="xqInfor font-26 color6" scroll-y style="height: 440rpx;">
+					<view class="cont">
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+					</view>
 				</scroll-view>
 			</view>
 		</view>
@@ -175,7 +177,7 @@
 	
 	.yushouText{height: 600rpx;width: 80%;background-color: #fff;border-radius: 10rpx;position: fixed;top: 50%;left: 50%;transform: translate(-50%,-50%);box-sizing: border-box;padding: 30rpx;z-index: 50;}
 	
-	.xqInfor{height: 440rpx;}
-	.xqInfor view{width: 100%;margin-bottom: 20rpx;}
+	/* .xqInfor{height: 440rpx;}
+	.xqInfor view{width: 100%;margin-bottom: 20rpx;} */
 	
 </style>

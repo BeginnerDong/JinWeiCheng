@@ -90,7 +90,7 @@
 	/* @import "../../assets/style/editInfor.css"; */
 	page{background: #F5F5F5;}
 	
-	.topNavFix{width: 100%;height: 80rpx;position: fixed;top: 80rpx;right: 0;left: 0;box-sizing: border-box;z-index: 22;}
+	.topNavFix{width: 100%;height: 80rpx;position: fixed;top: 0rpx;right: 0;left: 0;box-sizing: border-box;z-index: 22;}
 	.topNavH{height: 80rpx;}
 	
 	.proRow .item{padding: 0 30rpx;}

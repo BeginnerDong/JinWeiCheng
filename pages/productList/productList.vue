@@ -3,10 +3,11 @@
 		
 		<view class="">
 			<view class="">
-				<scroll-view scroll-x class="whiteBj color6 boxShaow scroll-row orderNav"  >
+				<scroll-view scroll-x class="whiteBj color6 boxShaow scroll-row orderNav shadow-sm"  >
 					<view class="tt scroll-row-item mx-3" v-for="(item,index) in navList" :key="index" :class="curr==index?'on':''" @click="changeCurr(index)">{{item}}</view>
 				</scroll-view>
 			</view>
+			<view class="orderNavH"></view>
 			
 			<view class="productList d-flex j-sb flex-wrap mx-3">
 				<view class="item rounded10 mt-3" v-for="(item,index) in productData" :key="index" @click="Router.navigateTo({route:{path:'/pages/productDetail/productDetail'}})">
@@ -63,6 +64,8 @@
 	@import "../../assets/style/productList.css";
 	
 	page{padding-bottom: 60rpx;background-color: #F5F5F5;}	
+	.orderNav{position: fixed; left:0; right: 0;top: 0; z-index: 10;}
+	.orderNavH{height: 80rpx;}
 	.orderNav .tt{width: auto;}
 	.orderNav .tt.on{color: #222;font-size: 28rpx;font-weight: bold;}
 </style>

@@ -9,8 +9,8 @@
 						默认地址
 					</view>
 					<view class="R font-24 color9 d-flex a-center">
-						<view class="child  d-flex a-center mgr20" @click="Router.navigateTo({route:{path:'/pages/user_addressAdd/user_addressAdd'}})"><image src="../../static/images/addressl-icon2.png" mode=""></image>编辑</view>
-						<view class="child  d-flex a-center" @click="deltAlert"><image src="../../static/images/addressl-icon3.png" mode=""></image>删除</view>
+						<view class="child  d-flex a-center mr-4" @click="Router.navigateTo({route:{path:'/pages/user_addressAdd/user_addressAdd'}})"><image src="../../static/images/addressl-icon1.png" mode=""></image>编辑</view>
+						<view class="child  d-flex a-center" @click="deltAlert"><image src="../../static/images/addressl-icon2.png" mode=""></image>删除</view>
 					</view>
 				</view>
 			</view>

@@ -91,7 +91,5 @@
 	
 	.yushouText{height: 600rpx;width: 80%;background-color: #fff;border-radius: 10rpx;position: fixed;top: 50%;left: 50%;transform: translate(-50%,-50%);box-sizing: border-box;padding: 30rpx;z-index: 50;}
 	
-	.xqInfor{height: 440rpx;}
-	.xqInfor view{width: 100%;margin-bottom: 20rpx;}
 	
 </style>

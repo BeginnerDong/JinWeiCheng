@@ -1,11 +1,13 @@
 <template>
 	<view>
 		
-		<view class="d-flex text-center orderNav color6 bg-white">
+		<view class="d-flex text-center orderNav color6 bg-white shadow-sm">
 			<view class="tt" :class="curr==1?'on':''" @click="currChange('1')">未使用</view>
 			<view class="tt" :class="curr==2?'on':''" @click="currChange('2')">已使用</view>
 			<view class="tt" :class="curr==3?'on':''" @click="currChange('3')">已过期</view>
 		</view>
+		<view class="orderNavH"></view>
+		
 		<view class="mx-3 mt-3">
 			<view class="cuponList" v-show="curr==1">
 				<view class="item mb-3" v-for="(item,index) in cuponList" :key="index" >
@@ -99,5 +101,7 @@
 	@import "../../assets/style/orderNav.css";
 	@import "../../assets/style/cupon.css";
 	page{background: #F5F5F5;padding-bottom: 140rpx;}
+	.orderNav{width: 100%;height: 80rpx;position: fixed;top: 0rpx;right: 0;left: 0;box-sizing: border-box;z-index: 22;}
+	.orderNavH{height: 80rpx;}
 	
 </style>
