@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<title>首页</title>
+		<script src="./js/vue.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/base.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/public.css">
+	</head>
+	<style type="text/css">
+		.w750{width: 100%;max-width: 750px;margin: 0 auto;}
+		.topTitle{line-height: 50px; font-size: 16px;}
+		.arrow{position: absolute;top: 50%;left: 0;transform: translateY(-50%);}
+		.arrow img{width: 10px;height: 18px;display: block;}
+		
+		/*内容详情页*/
+		.xqInfor{padding: 0 4%;}
+		.xqInfor .topTit{ padding: 30px 0 20px 0;}
+		.xqInfor .title{ font-size: 22px; line-height:36px;margin-bottom: 15px; }
+		.xqInfor .inforCont img{ display: block; height: auto; display: block; margin:0 auto 10px auto;width: 100%;}
+		
+		.xqInfor .inforCont p{ padding-bottom: 10px;color: #666;line-height: 28px;font-size: 16px;}
+		
+		@media screen and ( max-width: 500px){
+			.xqInfor .topTit{padding: 20px 0 10px 0;}
+			.xqInfor .topTit p{font-size: 13px;}
+			.xqInfor .title{font-size: 16px;line-height: 24px;margin-bottom: 10px;}
+			.xqInfor .inforCont p{font-size: 13px;}
+		}
+		
+	</style>
+
+	<body>
+		<div id="app">
+			<div class="w750 pr shareBj">
+				<div class="center pr topTitle mglr borderB1">
+					<a class="arrow" href="javascript:;" onClick="javascript :history.back(-1);"><img src="images/arrowBlack.png" ></a>
+					分享
+				</div>
+				<div class="xqInfor">
+					<div class="topTit">
+						<h1 class="title center ftn">这届男篮输了，但希望还在</h1>	
+						<p class="tex2 fs14 color9 center">2020-04-23</p>
+					</div>
+					<div class="inforCont pdb80">
+						<p>现代教育制度形成以来，体育一直是学校教育的重要手段和学校课程体系的重要体育教育丛书1体育教育丛书1内容。</p>
+						<img src="images/detail-img.jpg">
+						<p>上个世纪中叶以前近两百年的发展过程中，早期学校体育具有的人文教育色彩逐渐淡薄，课程的科学化倾向和学科中心倾向日益加强，其主要表现是“增强体质”和“技能传授”逐渐成为学校体育的主要目的，在实践中甚至成为唯一的目的；早期学校体育指向受教育者的人格完善逐渐变为主要指向受教育者的身体完善</p>
+					</div>
+				</div>
+					
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		
+		var app = new Vue({
+			el: '#app',
+			data: function() {
+				return {
+					is_toggle: false,
+					indshareLis: [],
+					mainData:[]
+				}
+			},
+			methods: {
+				getMainData: function(id) {
+					var self = this;
+					var callback = function(res) {
+						console.log('getMainData', res);
+						self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 0; i < self.mainData.length; i++) {
+							self[self.mainData[i].title] = self.mainData[i];
+						};
+						console.log(self[''])
+						
+					};
+					console.log('self.mainData', self.mainData)
+				}
+			}
+		});
+	</script>
+
+
+</html>

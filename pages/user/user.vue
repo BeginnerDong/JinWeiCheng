@@ -4,9 +4,9 @@
 		<view class="userHead  main-bg-color">
 			<view class="infor mx-3 text-white">
 				<view class="d-flex a-center mt-4">
-					<view><image class="photo" src="../../static/images/about-img.png" mode=""></image></view>
+					<view class="photo" style="overflow: hidden;"><open-data type="userAvatarUrl"></open-data></view>
 					<view style="width: 70%;">
-						<view class="font-32">哆啦A梦</view>
+						<view class="font-32"><open-data type="userNickName"></open-data></view>
 					</view>
 				</view>
 			</view>

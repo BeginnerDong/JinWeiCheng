@@ -3,42 +3,44 @@
 		
 		<view class="bg-white boxShaow overflow-h mt-3 mb-3">
 			<view class="px-3 py-3">
-				<view class="d-flex j-center pt-3 pb-4" @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
-					<view class="font-28 color6 d-flex">
-						<view style="width: 36rpx;height:36rpx;margin-right: 20rpx;"><image src="../../static/images/the-orderl-icon3.png" mode=""></image></view>
-						<view class="font-30">添加收货地址</view>
-					</view>
-				</view>
-				<view class="d-flex j-sb a-center"  @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
+				
+				<view class="d-flex j-sb a-center" v-if="addressData.name"  @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
 					<view class="font-28">
 						<view class="d-flex mt-1">
-							<view class="mr-3 color2">张思德</view>
-							<view class="color6">15689562352</view>
+							<view class="mr-3 color2">{{addressData.name}}</view>
+							<view class="color6">{{addressData.phone}}</view>
 						</view>
-						<view class="mt-2">陕西省西安市雁塔区高新大都荟</view>
+						<view class="mt-2">{{addressData.city+addressData.detail}}</view>
 					</view>
 					<view class="d-flex j-end" style="width: 20%;">
 						<image class="arrowR" src="../../static/images/detailsl-icon1.png" mode=""></image>
+					</view>
+				</view>
+				
+				<view class="d-flex j-center pt-3 pb-4" v-else @click="Router.navigateTo({route:{path:'/pages/user_address/user_address'}})">
+					<view class="font-28 color6 d-flex">
+						<view style="width: 36rpx;height:36rpx;margin-right: 20rpx;"><image src="../../static/images/the-orderl-icon3.png" mode=""></image></view>
+						<view class="font-30">添加收货地址</view>
 					</view>
 				</view>
 			</view>
 			<view style="width: 100%;height: 8rpx;"><image src="../../static/images/the-orderl-img.png" mode=""></image></view>
 		</view>
 		<view class="proRow mt-3">
-			<view class="item d-flex j-sb mb-3" >
-				<view class="pic"><image src="../../static/images/shopping-img.png" mode=""></image></view>
+			<view class="item d-flex j-sb mb-3" v-for="(item,index) in mainData" :key="index">
+				<view class="pic"><image :src="item.product&&item.product.mainImg&&item.product.mainImg[0]?item.product.mainImg[0].url:''" mode=""></image></view>
 				<view class="infor">
-					<view class="tit avoidOverflow">墨西哥牛油果8枚单果200g左右</view>
-					<view class="d-flex font-24 color6 mt-1">
+					<view class="tit avoidOverflow">{{item.product&&item.product.title?item.product.title:''}}</view>
+					<!-- <view class="d-flex font-24 color6 mt-1">
 						<view class="specsBtn mr-1">精装品5斤</view>
-					</view>
+					</view> -->
 					<view class="d-flex j-sb B-price">
-						<view class="priceF font-32 font-weight">56</view>
+						<view class="priceF font-32 font-weight">{{item.product&&item.product.price?item.product.price:''}}</view>
 						<view class="flexEnd">
 							<view class="numBox d-flex">
-								<view class="btn" @click="counter('-')">-</view>
-								<view class="num">{{count}}</view>
-								<view class="btn pubBj white add" @click="counter('+')">+</view>
+								<view class="btn" @click="counter(index,'-')">-</view>
+								<view class="num">{{item.count}}</view>
+								<view class="btn pubBj white add" @click="counter(index,'+')">+</view>
 							</view>
 						</view>
 					</view>
@@ -47,7 +49,7 @@
 		</view>
 		
 		<view class="xqbotomBar px-3">
-			<view class="d-flex a-center mr-3 font-26 flex"><view>总计</view><view class="priceF font-weight font-30 ml-1">56</view></view>
+			<view class="d-flex a-center mr-3 font-26 flex"><view>总计</view><view class="priceF font-weight font-30 ml-1">{{totalPrice}}</view></view>
 			<view class="payBtn main-bg-color rounded50 text-white" @click="exchangeShow">立即兑换</view>
 		</view>
 		
@@ -57,20 +59,14 @@
 			<view class="tit text-center font-30">瑾味成电子商务有限公司</view>
 			<view class="d-flex j-center mt-5 border-bottom pb-3">
 				<view class="font-26 mt-1">积分</view>
-				<view class="munber font-big font-weight ml" >56</view>
+				<view class="munber font-big font-weight ml" >{{totalPrice}}</view>
 			</view>
 			<view class="d-flex j-sb a-center py-3">
 				<view class="font-26 color6">支付方式</view>
 				<view class="d-flex j-end a-center"><image class="mr-1" style="width: 36rpx;height: 36rpx;" src="../../static/images/the-orderl-icon2.png" mode=""></image>积分</view>
 			</view>
 			<view class="submitbtn" style="margin-top: 80rpx;">
-				<view class="Wbtn" @click="exchangeOk">确认兑换</view>
-			</view>
-			
-			<view class="alertBox font-26 text-white p-3 rounded20 text-center d-flex flex-column a-center j-center" v-show="is_exchangeOk">
-				<view class="closebtn text-white"  @click="exchangeOk">×</view>
-				<view class="py-1">您的积分还不足兑换商品！</view>
-				<view class="">兑换成功！</view>
+				<button style="margin: 0;font-size:15px" class="Wbtn" open-type="getUserInfo"  @getuserinfo="Utils.stopMultiClick(submit)">确认兑换</button>
 			</view>
 		</view>
 		
@@ -83,42 +79,209 @@
 		data() {
 			return {
 				Router:this.$Router,
+				Utils:this.$Utils,
 				showView: false,
 				score:'',
 				wx_info:{},
 				is_show:false,
 				curr:1,
 				count:1,
-				is_show:false,
 				is_exchangeShow:false,
-				is_exchangeOk:false
+				is_exchangeOk:false,
+				addressData:{},
+				pay:{
+					
+				},
+				totalPrice:0,
+				mainData:[],
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.mainData = uni.getStorageSync('payPro');
+			console.log('self.mainData',self.mainData)
+			self.countTotalPrice()
 		},
+		
+		onShow() {
+			const self = this;
+			if(uni.getStorageSync('choosedAddressData')){
+				self.addressData = uni.getStorageSync('choosedAddressData')
+			}else{
+				self.getAddressData()
+			};
+		},
+		
 		methods: {
-			counter(type) {
-				const self = this;			
-				if (type == '+') {
-					self.count++;
-				} else {
-					if (self.count > 1) {
-						self.count--;
+			
+			getAddressData() {
+				const self = this;		
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					isdefault:1
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.addressData = res.info.data[0];
 					}
-				};			
+				};
+				self.$apis.addressGet(postData, callback);
+			},
+			
+			counter(index, type) {
+				const self = this;
+				if (type == '+') {
+					self.mainData[index].count++;
+				} else {
+					if (self.mainData[index].count > 1) {
+						self.mainData[index].count--;
+					}
+				};
 				self.countTotalPrice();
 			},
+			
+			countTotalPrice() {
+				const self = this;
+				self.totalPrice = 0;
+				
+				for (var i = 0; i < self.mainData.length; i++) {
+					self.totalPrice += self.mainData[i].product.price*self.mainData[i].count
+				}
+				
+				self.totalPrice = (parseFloat(self.totalPrice)).toFixed(2)
+				//console.log('wxPay',wxPay)
+				if (self.totalPrice > 0) {
+					self.pay.score = {
+						price: self.totalPrice,
+					};
+				} else {
+					  delete self.pay.score;	 
+				};
+				console.log(self.pay)
+			},
+			
+			submit(){
+				const self = this;
+				
+				uni.setStorageSync('canClick', false);
+				if(JSON.stringify(self.addressData) == '{}'){
+					uni.setStorageSync('canClick', true);
+					
+					self.$Utils.showToast('请选择收货地址','none')
+					return
+				}
+				var data = {
+					snap_address: self.addressData,
+				}
+				var orderList = []
+				for (var i = 0; i < self.mainData.length; i++) {
+					orderList.push({product_id:self.mainData[i].product_id,count:self.mainData[i].count,data: data,
+					snap_address: self.addressData})
+				}
+				const callback = (user, res) => {
+					self.addOrder(orderList)
+				};
+				self.$Utils.getAuthSetting(callback);
+			},
+			
+			addOrder(orderList) {
+				const self = this;	
+				
+				/* if(self.orderId){
+					self.goPay()
+					return
+				}; */
+				const postData = {}; 
+				postData.orderList = self.$Utils.cloneForm(orderList);
+				postData.type=2;
+				postData.data = {
+					level:1,
+					snap_address:self.addressData,
+				};
+				postData.parent = 1;
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					uni.setStorageSync('canClick', true);
+					if (res && res.solely_code == 100000) {
+						self.orderId = res.info.id;
+						self.exchangeShow()
+						self.goPay()
+					} else {		
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						});
+					};		
+				};
+				self.$apis.addOrder(postData, callback);
+			},
+			
+			goPay() {
+				const self = this;	
+				const postData = self.$Utils.cloneForm(self.pay);	
+				postData.tokenFuncName = 'getProjectToken',
+				postData.searchItem = {
+					id: self.orderId
+				};
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						uni.setStorageSync('canClick', true);
+					
+						if (res.info) {
+							const payCallback = (payData) => {
+								console.log('payData', payData)
+								if (payData == 1) {
+									uni.showToast({
+										title: '支付成功',
+										duration: 1000,
+										success: function() {
+											
+										}
+									});
+									setTimeout(function() {
+										self.$Router.redirectTo({route:{path:'/pages/userOrder/userOrder'}})
+									}, 1000);
+								} else {
+									uni.setStorageSync('canClick', true);
+									uni.showToast({
+										title: '支付失败',
+										duration: 2000
+									});
+								};
+							};
+							self.$Utils.realPay(res.info, payCallback);
+						} else {
+							
+							uni.showToast({
+								title: '支付成功',
+								duration: 1000,
+								success: function() {
+									
+								}
+							});
+							setTimeout(function() {
+								self.$Router.redirectTo({route:{path:'/pages/userOrder/userOrder'}})
+							}, 1000);
+						};
+					} else {
+						uni.setStorageSync('canClick', true);
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						});
+					};
+				};
+				self.$apis.pay(postData, callback);
+			},
+			
 			exchangeShow(){
 				const self = this;
 				self.is_show = !self.is_show;
 				self.is_exchangeShow = !self.is_exchangeShow
 			},
-			exchangeOk(){
-				const self = this;
-				self.is_exchangeOk = !self.is_exchangeOk
-			}
+			
 		}
 	};
 </script>

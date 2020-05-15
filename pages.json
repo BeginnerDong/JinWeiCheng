@@ -52,7 +52,7 @@
 		{
 			"path": "pages/productList-activity/productList-activity",
 			"style": {
-				"navigationBarTitleText": "买一送一",
+				"navigationBarTitleText": "",
 				"onReachBottomDistance":100
 			}
 		},

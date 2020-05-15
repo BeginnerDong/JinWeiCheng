@@ -401,6 +401,30 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
+	
+	couponGet(param, callback) {
+		var allParams = {
+			url: 'Common/Coupon/get',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	couponAdd(param, callback) {
+		var allParams = {
+			url: 'Func/Coupon/addCoupon',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 
 	userCouponGet(param, callback) {
 		var allParams = {

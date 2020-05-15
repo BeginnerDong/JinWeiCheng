@@ -2,14 +2,14 @@
 	<view>
 		
 		<view class="banner-box">
-			<image class="slide-image" src="../../static/images/detailsl-img.png" />
+			<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
 		</view>
 		
 		<view class="mx-3 py-2">
-			<view class="font-32 font-weight pb-2">墨西哥牛油果8枚单果200g左右</view>
+			<view class="font-32 font-weight pb-2">{{mainData.title}}</view>
 			<view class="d-flex j-sb">
-				<view class="price font-weight font-32">56</view>
-				<view class="color9 font-24">预售期：4月15日</view>
+				<view class="price font-weight font-32">{{mainData.price}}</view>
+				<view class="color9 font-24" v-if="mainData.type==3">预售期：{{Utils.timeto(mainData.end_time,'md')}}</view>
 			</view>
 		</view>
 		
@@ -20,12 +20,12 @@
 				<view class="arrowR"><image src="../../static/images/detailsl-icon1.png" mode=""></image></view>
 			</view>
 			
-			<view class="specsLable d-flex font-26">
+			<!-- <view class="specsLable d-flex font-26">
 				<view class="tt" v-for="(item,index) in specsData" :key="index">{{item}}</view>
-			</view>
+			</view> -->
 		</view>
-		<view class="f5Bj-H20"></view>
-		<view class="px-3 py-3 d-flex j-sb a-center">
+		<view class="f5Bj-H20" v-if="mainData.type==3"></view>
+		<view class="px-3 py-3 d-flex j-sb a-center" v-if="mainData.type==3">
 			<view class="font-26 color6">预售说明</view>
 			<view class="d-flex j-end a-center" @click="yushouTextShow">查看<image class="arrowR" src="../../static/images/detailsl-icon1.png" mode=""></image></view>
 		</view>
@@ -34,15 +34,9 @@
 			<view class="py-3 xqInfor">
 				<view class="font-26 pb-3 color6">商品描述</view>
 				<view class="cont fs14 text-center">
-					<view>管理客服电话</view>
-					<view>悲愤交加鹤骨鸡肤供货</view>
-					<view>方点击可供货方都拉黑干活的放假</view>
-					<view>价格过节费考虑到加工费</view>
-					<view><image src="../../static/images/detailsl-img1.png" mode="widthFix"></image></view>
-					<view>管理客服电话</view>
-					<view>悲愤交加鹤骨鸡肤供货</view>
-					<view>方点击可供货方都拉黑干活的放假</view>
-					<view>价格过节费考虑到加工费</view>
+					<view class="content ql-editor" style="padding:0;"
+					v-html="mainData.content">
+					</view>
 				</view>
 			</view>
 		</view>
@@ -66,22 +60,27 @@
 		<view class="spaceShow bg-white" v-show="is_spaceShow">
 			<view class="closebtn" @click="spaceShow">×</view>
 			<view class="d-flex">
-				<view class="pic rounded10 overflow-h mr-3"><image src="../../static/images/home-img1.png" mode=""></image></view>
+				<view class="pic rounded10 overflow-h mr-3">
+					<image :src="mainData.sku[specsCurr]&&mainData.sku[specsCurr].mainImg&&mainData.sku[specsCurr].mainImg[0]
+					?mainData.sku[specsCurr].mainImg[0].url:''" mode=""></image>
+				</view>
 				<view class="infor">
-					<view class="price font-weight font-36 mt-5 pt-2 mb-3">42</view>
-					<view class="font-26">请选择规格</view>
+					<view class="price font-weight font-36 mt-5 pt-2 mb-3">{{mainData.sku[specsCurr]?mainData.sku[specsCurr].price:''}}</view>
+					<!-- <view class="font-26">请选择规格</view> -->
 				</view>
 			</view>
 			<view class="mt-3">
 				<view class="font-26">规格</view>
 				<view class="specsLable d-flex font-26 color6">
-					<view class="tt" :class="specsCurr==index?'on':''" v-for="(item,index) in seltSpecsData" :key="index" @click="specsChange(index)">{{item}}</view>
+					<view class="tt" :class="specsCurr==index?'on':''" v-for="(item,index) in mainData.sku" :key="index" 
+					@click="specsChange(index)">{{item.title}}</view>
 				</view>
 			</view>
 			<view class="xqbotomBar px-3" style="box-shadow:initial">
 				<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30" style="width: 100%">
-					<view class="w-50 text-center hei">加入购物车</view>
-					<view class="w-50 text-center main-bg-color" @click="Router.navigateTo({route:{path:'/pages/orderConfim/orderConfim'}})">立即购买</view>
+					<view class="w-50 text-center hei" @click="addCar">加入购物车</view>
+					<view class="w-50 text-center main-bg-color" 
+					@click="goBuy">立即购买</view>
 				</view>
 			</view>
 			
@@ -95,14 +94,9 @@
 			<view class="mgt15">
 				<scroll-view class="xqInfor font-26 color6" scroll-y style="height: 440rpx;">
 					<view class="cont">
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
-						<view>1、九是国家开发的说法是国防生的客户给发的广泛地刚刚好共同繁荣</view>
+						<view class="content ql-editor" style="padding:0;"
+						v-html="mainData.passage1">
+						</view>
 					</view>
 				</scroll-view>
 			</view>
@@ -116,6 +110,7 @@
 		data() {
 			return {
 				Router:this.$Router,
+				Utils:this.$Utils,
 				showView: false,
 				wx_info:{},
 				is_show:false,
@@ -123,35 +118,125 @@
 				specsData:['定制版120ML','定制版100ML'],
 				is_spaceShow:false,
 				seltSpecsData:['定制版120ML','定制版100ML','定制版','定制版','定制版100ML','定制版120ML',],
-				is_yushouTextShow:false
+				is_yushouTextShow:false,
+				mainData:{},
+				orderList:[],
+				artData:{}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.id = options.id;
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onShow() {
+			const self = this;
+			self.orderList = [];
+			uni.removeStorageSync('payPro');
+		},
+		
 		methods: {
+			
+		
+			
+			goBuy(){
+				const self = this;
+				uni.setStorageSync('canClick',false);
+				if(self.mainData.is_notBuying){
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('商品预售中', 'none');
+					return
+				};
+				self.orderList.push(
+					{sku_id:self.mainData.sku[self.specsCurr].id,count:1,
+					type:self.mainData.type,product:self.mainData,skuIndex:self.specsCurr},
+				);
+				uni.setStorageSync('payPro', self.orderList);
+				self.Router.navigateTo({route:{path:'/pages/orderConfim/orderConfim'}})
+				uni.setStorageSync('canClick',true);
+			},
+			
+			addCar() {
+				const self = this;
+				if(self.mainData.is_notBuying){
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('商品预售中', 'none');
+					return
+				};
+				var obj = self.mainData;
+				self.mainData.skuIndex = self.specsCurr;
+				var array = self.$Utils.getStorageArray('cartData');
+				for (var i = 0; i < array.length; i++) {
+					if (array[i].sku[array[i].skuIndex].id == self.mainData.sku[self.specsCurr].id) {
+						var target = array[i]
+					}
+				}
+				if (target) {
+					target.count = target.count + 1
+				} else {
+					var target = self.mainData;
+					target.count = 1;
+					target.isSelect = true;
+				}
+				self.$Utils.showToast('加入成功', 'none');
+				self.$Utils.setStorageArray('cartData', target, 'id', 999);
+			},
+			
 			specsChange(index){
 				const self = this;
-				self.specsCurr = index
+				self.specsCurr = index;
 			},
+			
 			spaceShow(){
 				const self = this;
 				self.is_show = !self.is_show;
 				self.is_spaceShow = !self.is_spaceShow 
 			},
+			
 			yushouTextShow(){
 				const self = this;
 				self.is_show = !self.is_show;
 				self.is_yushouTextShow = !self.is_yushouTextShow 
 			},
+			
 			getMainData() {
 				const self = this;
-				console.log('852369')
+				var now = new Date().getTime();
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.searchItem = {
+					thirdapp_id: 2,
+					id:self.id
+				};
+				postData.getAfter = {
+					sku: {
+						tableName: 'Sku',
+						middleKey: 'product_no',
+						key: 'product_no',
+						condition: '=',
+						searchItem: {
+							status: 1
+						}
+					},
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						if(parseInt(self.mainData.end_time)>now){
+							self.mainData.is_notBuying = true
+						}else{
+							self.mainData.is_Buying = true
+						}
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+						self.mainData.passage1 = self.mainData.passage1.replace(regex, `<img style="max-width: 100%;"`);
+					}
+					self.$Utils.finishFunc('getMainData');
+						
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	};
 </script>

@@ -2,13 +2,13 @@
 	<view>
 		
 		<view class="banner-box">
-			<image class="slide-image" src="../../static/images/detailsl-img.png" />
+			<image class="slide-image" :src="mainData.bannerImg&&mainData.bannerImg[0]?mainData.bannerImg[0].url:''" />
 		</view>
 		
 		<view class="mx-3 py-2">
-			<view class="font-32 font-weight pb-2">墨西哥牛油果8枚单果200g左右</view>
+			<view class="font-32 font-weight pb-2">{{mainData.title}}</view>
 			<view class="d-flex">
-				<view class="priceF font-weight font-32">56</view>
+				<view class="priceF font-weight font-32">{{mainData.price}}</view>
 			</view>
 		</view>
 		<view class="f5Bj-H20"></view>
@@ -16,15 +16,8 @@
 			<view class="py-3 xqInfor">
 				<view class="font-26 pb-3 color6">商品描述</view>
 				<view class="cont fs14 text-center">
-					<view>管理客服电话</view>
-					<view>悲愤交加鹤骨鸡肤供货</view>
-					<view>方点击可供货方都拉黑干活的放假</view>
-					<view>价格过节费考虑到加工费</view>
-					<view><image src="../../static/images/detailsl-img1.png" mode="widthFix"></image></view>
-					<view>管理客服电话</view>
-					<view>悲愤交加鹤骨鸡肤供货</view>
-					<view>方点击可供货方都拉黑干活的放假</view>
-					<view>价格过节费考虑到加工费</view>
+					<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
+					</view>
 				</view>
 			</view>
 		</view>
@@ -37,7 +30,8 @@
 				</view>
 			</view>
 			<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30">
-				<view class="text-center w-100 main-bg-color"  @click="Router.navigateTo({route:{path:'/pages/integralOrderConfim/integralOrderConfim'}})">立即兑换</view>
+				<view class="text-center w-100 main-bg-color"  
+				@click="goBuy">立即兑换</view>
 			</view>
 		</view>
 		
@@ -52,21 +46,63 @@
 				Router:this.$Router,
 				showView: false,
 				wx_info:{},
-				is_show:false
+				is_show:false,
+				mainData:{}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			// self.$Utils.loadAll(['getMainData'], self);
+			self.id = options.id;
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onShow() {
+			const self = this;
+			self.orderList = [];
+			uni.removeStorageSync('payPro');
+		},
+		
 		methods: {
+			
+			goBuy() {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				self.orderList.push({
+					product_id: self.mainData.id,
+					count: 1,
+					type: self.mainData.type,
+					product: self.mainData
+				}, );
+				uni.setStorageSync('payPro', self.orderList);
+				self.Router.navigateTo({
+					route: {
+						path: '/pages/integralOrderConfim/integralOrderConfim'
+					}
+				})
+				uni.setStorageSync('canClick', true);
+			},
+			
 			getMainData() {
 				const self = this;
-				console.log('852369')
+				var now = new Date().getTime();
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.searchItem = {
+					thirdapp_id: 2,
+					id:self.id
+				};
+
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0];
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+					}
+					self.$Utils.finishFunc('getMainData');
+						
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	};
 </script>

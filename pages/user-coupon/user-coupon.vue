@@ -9,54 +9,20 @@
 		<view class="orderNavH"></view>
 		
 		<view class="mx-3 mt-3">
-			<view class="cuponList" v-show="curr==1">
-				<view class="item mb-3" v-for="(item,index) in cuponList" :key="index" >
+			<view class="cuponList">
+				<view class="item mb-3" v-for="(item,index) in mainData" :key="index" >
 					<view class="infor">
-						<view class="bj"><image src="../../static/images/couponsl-img.png" mode=""></image></view>
+						<view class="bj"><image :src="item.use_step==1?'../../static/images/couponsl-img.png':'../../static/images/couponsl-img1.png'" mode=""></image></view>
+						<view class="fixState" v-if="item.use_step==2"><image src="../../static/images/couponsl-img3.png" mode=""></image></view>
+						<view class="fixState" v-if="item.use_step==-1"><image src="../../static/images/couponsl-img4.png" mode=""></image></view>
 						<view class="d-flex j-sb a-center">
 							<view class="left d-flex j-center a-center">
-								<view class="mny">100</view>
+								<view class="mny">{{item.value}}</view>
 							</view>
 							<view class="text pl-3">
-								<view class="font-30 font-weight avoidOverflow">瑾味成</view>
-								<view class="font-26 color6 mt-2">满20减5元</view>
-								<view class="font-22 color9 mt-1 ">有效期：领取即日起7天</view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="cuponList" v-show="curr==2">
-				<view class="item mb-3" v-for="(item,index) in cuponList" :key="index" >
-					<view class="infor">
-						<view class="bj"><image src="../../static/images/couponsl-img1.png" mode=""></image></view>
-						<view class="fixState"><image src="../../static/images/couponsl-img3.png" mode=""></image></view>
-						<view class="d-flex j-sb a-center">
-							<view class="left d-flex j-center a-center">
-								<view class="mny">100</view>
-							</view>
-							<view class="text pl-3">
-								<view class="font-30 font-weight avoidOverflow">瑾味成</view>
-								<view class="font-26 color6 mt-2">满20减5元</view>
-								<view class="font-22 color9 mt-1 ">有效期：领取即日起7天</view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="cuponList" v-show="curr==3">
-				<view class="item mb-3" v-for="(item,index) in cuponList" :key="index" >
-					<view class="infor">
-						<view class="bj"><image src="../../static/images/couponsl-img1.png" mode=""></image></view>
-						<view class="fixState"><image src="../../static/images/couponsl-img4.png" mode=""></image></view>
-						<view class="d-flex j-sb a-center">
-							<view class="left d-flex j-center a-center">
-								<view class="mny">100</view>
-							</view>
-							<view class="text pl-3">
-								<view class="font-30 font-weight avoidOverflow">瑾味成</view>
-								<view class="font-26 color6 mt-2">满20减5元</view>
-								<view class="font-22 color9 mt-1 ">有效期：领取即日起7天</view>
+								<view class="font-30 font-weight avoidOverflow">{{item.title}}</view>
+								<view class="font-26 color6 mt-2">满{{item.condition}}减{{item.value}}元</view>
+								<view class="font-22 color9 mt-1 ">有效期：{{item.invalid_time}}</view>
 							</view>
 						</view>
 					</view>
@@ -65,7 +31,7 @@
 		</view>
 		
 		<!-- 无数据时显示 -->
-		<view class="nodata"><image src="../../static/images/nodata.png" mode=""></image></view>
+		<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 	</view>
 </template>
 
@@ -79,20 +45,76 @@
 				wx_info:{},
 				is_show:false,
 				curr:1,
-				cuponList:[{},{}]
+				cuponList:[{},{}],
+				mainData:[],
+				searchItem:{
+					thirdapp_id: 2,
+					use_step:1,
+				}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
+			
 			currChange(curr){
 				const self = this;	
 				if(curr!=self.curr){
-					self.curr = curr
+					self.curr = curr;
+					if(self.curr==1){
+						self.searchItem.use_step = 1
+					}else if(self.curr==2){
+						self.searchItem.use_step = 2
+					}else if(self.curr==3){
+						self.searchItem.use_step = -1
+					}
+					self.getMainData(true)
 				}
-			}
+			},
+			
+			getMainData(isNew) {
+				const self = this;
+				var now =  (new Date()).getTime();
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 0; i < self.mainData.length; i++) {
+							self.mainData[i].create_time = self.mainData[i].create_time.substr(0,10);
+							self.mainData[i].invalid_time = self.$Utils.timeto(self.mainData[i].invalid_time,'ymd')
+						}
+					}
+					console.log('self.mainData', self.mainData)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.userCouponGet(postData, callback);
+			},
 		}
 	};
 </script>
