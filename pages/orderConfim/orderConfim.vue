@@ -309,10 +309,11 @@
 						for (var i = 0; i < orderList.length; i++) {
 							for (var j = 0; j < array.length; j++) {
 								if(orderList[i].sku_id == array[j].sku[array[j].skuIndex].id){
-									self.$Utils.delStorageArray('cartData', orderList[i], 'id');
+									self.$Utils.delStorageArray('cartData', array[j], 'id');
 								}
 							}
 						};
+						
 						self.goPay()
 					} else {		
 						uni.showToast({

@@ -66,15 +66,23 @@
 				</view>
 				<view class="infor">
 					<view class="price font-weight font-36 mt-5 pt-2 mb-3">{{mainData.sku[specsCurr]?mainData.sku[specsCurr].price:''}}</view>
-					<!-- <view class="font-26">请选择规格</view> -->
+					<view class="font-26">库存：{{mainData.sku[specsCurr]?mainData.sku[specsCurr].stock:'0'}}</view>
 				</view>
 			</view>
 			<view class="mt-3">
 				<view class="font-26">规格</view>
-				<view class="specsLable d-flex font-26 color6">
+				<block>
+					<scroll-view scroll-y="true"  style="height: 320rpx">
+						<view class="specsLable d-flex font-26 text-center">
+							<view class="tt px-1" style="display: inline-block;" :class="specsCurr==index?'on':''" 
+							v-for="(item,index) in mainData.sku" :key="index" @click="specsChange(index)">{{item.title}}</view>
+						</view>
+					</scroll-view>
+				</block>
+				<!-- <view class="specsLable d-flex font-26 color6">
 					<view class="tt" :class="specsCurr==index?'on':''" v-for="(item,index) in mainData.sku" :key="index" 
 					@click="specsChange(index)">{{item.title}}</view>
-				</view>
+				</view> -->
 			</view>
 			<view class="xqbotomBar px-3" style="box-shadow:initial">
 				<view class="bottom-btnCont d-flex rounded50 overflow-h text-white font-30" style="width: 100%">
@@ -144,6 +152,11 @@
 			goBuy(){
 				const self = this;
 				uni.setStorageSync('canClick',false);
+				if(self.mainData.sku[self.specsCurr].stock==0){
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('库存不足！', 'none');
+					return
+				};
 				if(self.mainData.is_notBuying){
 					uni.setStorageSync('canClick',true);
 					self.$Utils.showToast('商品预售中', 'none');
@@ -160,6 +173,11 @@
 			
 			addCar() {
 				const self = this;
+				if(self.mainData.sku[self.specsCurr].stock==0){
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('库存不足！', 'none');
+					return
+				};
 				if(self.mainData.is_notBuying){
 					uni.setStorageSync('canClick',true);
 					self.$Utils.showToast('商品预售中', 'none');
